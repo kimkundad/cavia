@@ -44,8 +44,8 @@
             <div class="container">
                 <div class="ps-section__wrapper">
                     <div class="ps-section__left">
-                        <form class="ps-form--account ps-tab-root" >
-                            
+                        <form class="ps-form--account ps-tab-root" method="POST" action="{{url('login')}}">
+                            {{ csrf_field() }}
                             <div class="ps-tabs">
                                 <div class="ps-tab active" id="sign-in">
                                     <div class="ps-form__content">
@@ -55,12 +55,24 @@
                                             <h5>เข้าสู่ระบบบัญชีของคุณ</h5>
                                         </div>
                                         
-                                        
+
+                                        @error('name')
+                                        <div class="alert alert-warning" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                        @error('password')
+                                        <div class="alert alert-warning" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+
+
                                         <div class="form-group">
-                                            <input class="form-control" type="text" placeholder="Username or email address">
+                                            <input class="form-control" type="text" name="name" placeholder="บัญชีผู้ใช้งาน">
                                         </div>
                                         <div class="form-group form-forgot">
-                                            <input class="form-control" type="text" placeholder="Password"><a href="">ลืมรหัส?</a>
+                                            <input class="form-control" type="password" name="password"  placeholder="รหัสผ่าน"> <!-- <a href="#">ลืมรหัส?</a> -->
                                         </div>
                                         <div class="form-group">
                                             <div class="ps-checkbox">
@@ -69,7 +81,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group submit">
-                                            <button class="ps-btn ps-btn--fullwidth">เข้าสู่ระบบ</button>
+                                            <button class="ps-btn ps-btn--fullwidth" type="submit">เข้าสู่ระบบ</button>
                                         </div>
                                     </div>
                                 </div>
@@ -77,17 +89,30 @@
                             </div>
                         </form>
                     </div>
+                    <style>
+                        .ps-my-account-2 .ps-section__desc .ps-list li {
+    margin-bottom: 0px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.ps-my-account-2 .ps-section__desc p {
+    margin-bottom: 15px;
+}
+                    </style>
                     <div class="ps-section__right">
                         <figure class="ps-section__desc">
-                            <figcaption>Sign up today and you will be able to:</figcaption>
-                            <p>MartFury Buyer Protection has you covered from click to delivery. Sign up or sign in and you will be able to:</p>
+                            <figcaption> สิทธิพิเศษสำหรับ Cavia168 </figcaption>
+                            <p>ลงทะเบียนวันนี้รับคะแนนแลกของรางวัลได้เลย</p>
                             <ul class="ps-list">
-                                <li><i class="icon-credit-card"></i><span>SPEED YOUR WAY THROUGH CHECKOUT</span></li>
-                                <li><i class="icon-clipboard-check"></i><span>TRACK YOUR ORDERS EASILY</span></li>
-                                <li><i class="icon-bag2"></i><span>KEEP A RECORD OF ALL YOUR PURCHASES</span></li>
+                                <li><img src="{{ url('assets/img/website.png') }}" height="50"><span> เว็บตรง การันตีความมั่นคง อันดับ 1 ในประเทศ</span></li>
+                                <li><img src="{{ url('assets/img/gift_con.png') }}" height="50"><span> มีของรางวัลมาให้แลกมากมาย</span></li>
+                                <li><img src="{{ url('assets/img/24_Hr.png') }}" height="50"><span> ฝากด่วน ถอนไว บริการ 24 ชั่วโมง</span></li>
                             </ul>
                         </figure>
-                        <img src="{{ url('assets/img/11816049876282.jpg') }}" class="img-fluid">
+                      
+                        <img src="{{ url('img/setting/'.setting()->banner_login) }}" class="img-fluid">
                     </div>
                 </div>
             </div>

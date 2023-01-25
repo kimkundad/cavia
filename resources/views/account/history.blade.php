@@ -26,7 +26,7 @@
                 
                 <ul class="breadcrumb">
                     <li><a href="{{ url('/') }}">หน้าหลัก</a></li>
-                    <li><a href="{{ url('/user_information') }}">Account</a></li>
+                    <li><a href="{{ url('/account') }}">Account</a></li>
                     <li>ประวัติการแลกเปลี่ยน</li>
                 </ul>
             </div>
@@ -38,16 +38,17 @@
                     <div class="col-lg-3">
                         <div class="ps-section__left">
                             <aside class="ps-widget--account-dashboard">
-                                <div class="ps-widget__header"><img src="{{ url('assets/img/users/3.jpg') }}" alt="">
+                                <div class="ps-widget__header"><img src="{{ url('/img/avatar/'.Auth::user()->avatar) }}" alt="">
                                     <figure>
                                         <figcaption>Hello</figcaption>
-                                        <p><a href="#">username@gmail.com</a></p>
+                                        <p><a href="#">{{Auth::user()->name}}</a></p>
                                     </figure>
                                 </div>
                                 <div class="ps-widget__content">
                                     <ul>
                                         <li><a href="{{ url('account') }}"><i class="icon-user"></i> ข้อมูลบัญชี</a></li>
                                         <li class="active"><a href="{{ url('history') }}"><i class="icon-papers"></i> ประวัติการแลกเปลี่ยน</a></li>
+                                        <li><a href="{{ url('my_point') }}"><i class="icon-papers"></i> สะสมแต้ม</a></li>
                                         <li><a href="{{ url('logout') }}"><i class="icon-power-switch"></i>ออกจากระบบ</a></li>
                                     </ul>
                                 </div>
@@ -70,66 +71,71 @@
                                                     <th>สินค้า</th>
                                                     <th>point</th>
                                                     <th>Status</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+
+                                            @if(isset($objs))
+                                            @foreach($objs as $u)
                                                 <tr>
-                                                    <td><a href="{{ url('invoice_detail') }}" class="text-primary">500884010</a></td>
-                                                    <td>20-1-2022</td>
-                                                    <td><a href="{{ url('invoice_detail') }}">รองเท้า อาดิดาส สีขาว, จักรยานไฟฟ้า em3</a></td>
+                                                    <td><a href="{{ url('invoice_detail/'.$u->order_no) }}" class="text-primary">{{ $u->order_no }}</a></td>
+                                                    <td>{{ formatDateThat($u->created_at) }}</td>
+                                                    <td><a href="{{ url('invoice_detail/'.$u->order_no) }}">
+
+                                                    @if(isset($u->option))
+                                                        @foreach($u->option as $j)
+                                                        {{ $j->pro_name }},
+                                                        @endforeach
+                                                    @endif
                                                     
-                                                    <td>500</td>
-                                                    <td class="text-success">จัดสั่งสำเร็จ</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a href="{{ url('invoice_detail') }}" class="text-primary">500884009</a></td>
-                                                    <td>20-1-2022</td>
-                                                    <td><a href="{{ url('invoice_detail') }}">รองเท้า อาดิดาส สีขาว, จักรยานไฟฟ้า em3</a></td>
+                                                    </a></td>
                                                     
-                                                    <td>500</td>
-                                                    <td class="text-warning">อยู่ระหว่างการจัดส่ง</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a href="{{ url('invoice_detail') }}" class="text-primary">500884008</a></td>
-                                                    <td>19-1-2022</td>
-                                                    <td><a href="{{ url('invoice_detail') }}">รองเท้า อาดิดาส สีขาว, จักรยานไฟฟ้า em3</a></td>
+                                                    <td>{{ number_format((float)$u->sum_point, 0, '.', '') }}</td>
                                                     
-                                                    <td>500</td>
-                                                    <td class="text-danger">คืนสินค้า</td>
+                                                        
+                                                    @if($u->status == 0)
+                                                    <td class="text-warning">
+                                                        รอเจ้าหน้าที่ตรวจสอบ
+                                                    </td>
+                                                    @endif
+                                                    @if($u->status == 1)
+                                                    <td class="text-warning">
+                                                    อยู่ระหว่างการจัดส่ง
+                                                    </td>
+                                                    @endif
+                                                    @if($u->status == 2)
+                                                    <td class="text-success">
+                                                    จัดสั่งสำเร็จ
+                                                    </td>
+                                                    @endif
+                                                    @if($u->status == 3)
+                                                    <td class="text-danger">
+                                                    คืนสินค้า
+                                                    </td>
+                                                    @endif
+
+                                                    <td>
+                                                        <a class="ps-btn" href="{{ url('invoice_detail/'.$u->order_no) }}" style="padding: 5px 15px;font-size: 12px;">ดูข้อมูล</a>
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <td><a href="{{ url('invoice_detail') }}" class="text-primary">500884007</a></td>
-                                                    <td>15-1-2022</td>
-                                                    <td><a href="{{ url('invoice_detail') }}">รองเท้า อาดิดาส สีขาว, จักรยานไฟฟ้า em3</a></td>
-                                                    
-                                                    <td>500</td>
-                                                    <td class="text-warning">อยู่ระหว่างการจัดส่ง</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a href="{{ url('invoice_detail') }}" class="text-primary">500884006</a></td>
-                                                    <td>12-1-2022</td>
-                                                    <td><a href="{{ url('invoice_detail') }}">รองเท้า อาดิดาส สีขาว, จักรยานไฟฟ้า em3</a></td>
-                                                    
-                                                    <td>500</td>
-                                                    <td class="text-warning">อยู่ระหว่างการจัดส่ง</td>
-                                                </tr>
+                                                @endforeach
+                                            @endif
                                                 
                                                 
                                             </tbody>
                                         </table>
                                     </div>
 
-                                    <div class="ps-pagination">
-                                        <ul class="pagination">
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">Next Page<i class="icon-chevron-right"></i></a></li>
-                                        </ul>
-                                    </div>
+                                    @if(count($objs) > 15)
+                                    @include('pagination.default', ['paginator' => $objs])
+                                    @endif
                                     
                                 </div>
                             </div>
+
+                            <br>
+                            <img src="{{ url('img/setting/'.setting()->banner_his) }}" class="img-fluid">
                         </div>
                     </div>
                 </div>

@@ -37,46 +37,43 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                $total = 0;
+                                $shipping_price = 0;
+                                $sum = 0;
+                                ?>
+                            @if(Session::get('cart') != null)
+
+                            <?php
+                                
+                                $cart = session()->get('cart');
+                                ?>
+                                @foreach ($cart as $product_item)
+                                <?php
+                                    $total += ( $product_item['point']);
+                                ?>
                                 <tr>
                                     <td>
                                         <div class="ps-product--cart">
-                                            <div class="ps-product__thumbnail"><a href="#"><img src="{{ url('assets/img/products/electronic/1.jpg') }}" alt=""></a></div>
-                                            <div class="ps-product__content"><a href="#">Marshall Kilburn Wireless Bluetooth Speaker, Black (A4819189)</a>
-                                                <p>Sold By:<strong> YOUNG SHOP</strong></p>
+                                            <div class="ps-product__thumbnail"><a href="#"><img src="{{ url('assets/img/products/'.$product_item['image']) }}" alt=""></a></div>
+                                            <div class="ps-product__content"><a href="#">{{$product_item['name_product']}}</a>
+                                               
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="price">205.00</td>
-                                    <td>
-                                        <div class="form-group--number">
-                                            <button class="up">+</button>
-                                            <button class="down">-</button>
-                                            <input class="form-control" type="text" placeholder="1" value="1">
-                                        </div>
+                                    <td class="price text-center">{{ number_format((float)$product_item['point'], 0, '.', '') }}</td>
+                                    <td class="price text-center">
+                                        1
                                     </td>
-                                    <td>205.00</td>
-                                    <td><a href="#"><i class="icon-cross"></i></a></td>
+                                    <td class="price text-center">{{ number_format((float)$product_item['point'], 0, '.', '') }}</td>
+                                    <td class="price text-center"><a href="{{url('/deleteCart2/'.$product_item['id'])}}"><i class="icon-cross"></i></a></td>
                                 </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td>
-                                        <div class="ps-product--cart">
-                                            <div class="ps-product__thumbnail"><a href="#"><img src="{{ url('assets/img/products/clothing/2.jpg') }}" alt=""></a></div>
-                                            <div class="ps-product__content"><a href="#">Unero Military Classical Backpack</a>
-                                                <p>Sold By:<strong> YOUNG SHOP</strong></p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="price">205.00</td>
-                                    <td>
-                                        <div class="form-group--number">
-                                            <button class="up">+</button>
-                                            <button class="down">-</button>
-                                            <input class="form-control" type="text" placeholder="1" value="1">
-                                        </div>
-                                    </td>
-                                    <td>205.00</td>
-                                    <td><a href="#"><i class="icon-cross"></i></a></td>
+                                    <td colspan="5" class="text-center">-- ไม่มีสินค้าในตะกร้อ -- </td>
                                 </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>
@@ -95,7 +92,7 @@
                                
                                 <div class="ps-block__content">
                                     
-                                    <h3>Total <span>683.49</span></h3>
+                                    <h3>Total Point<span> {{ number_format((float)$total, 0, '.', '') }}</span></h3>
                                 </div>
                             </div><a class="ps-btn ps-btn--fullwidth" href="{{ url('checkout') }}">ดำเนินการถัดไป</a>
                         </div>

@@ -343,7 +343,9 @@
   border-bottom: 1px solid rgb(255, 255, 255);
 }
 body {
-  background-color: #000;
+  background: url('../img/desktop_home_background.jpg');
+    background-size: cover;
+    background-position: unset;
 }
 .header--autopart .navigation {
   background-color: #000;
@@ -493,4 +495,7 @@ p {
 }
 .header--standard.header--sticky .ps-logo {
    display: block;
+}
+.ps-banner--autopart {
+  min-height: auto;
 }
