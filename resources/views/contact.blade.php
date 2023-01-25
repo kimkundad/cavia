@@ -42,8 +42,8 @@
                         </div>
                         <div class="ps-section__content text-center">
                             <h4>เพิ่มเพื่อนใน LINE ด้วยคิวอาร์โค้ด</h4>
-                            <a href="https://line.me/R/ti/p/@859zubjc" target="_blank">
-                        <img src="{{ url('assets/img/lineat-poster-th_1_6-1-e1522718828586.jpg') }}" >
+                            <a href="{{ setting()->line_oa_url }}" target="_blank">
+                        <img src="{{ url('img/setting/'.setting()->line_img) }}" >
                         </a>
                         <br><br>
                         

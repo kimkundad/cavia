@@ -31,102 +31,100 @@
                     <h1>Checkout</h1>
                 </div>
                 <div class="ps-section__content">
-                    <form class="ps-form--checkout" action="do_action" method="post">
+                    <form  method="POST"  action="{{url('add_my_order')}}">
+                                {{ csrf_field() }}
                         <div class="row">
                             <div class="col-xl-7 col-lg-8 col-md-12 col-sm-12  ">
                                 <div class="ps-form__billing-info">
-                                    <h3 class="ps-form__heading">Billing Details</h3>
+                                    <h3 class="ps-form__heading">กรอกรายละเอียดการรับสินค้า</h3>
                                     <div class="form-group">
-                                        <label>First Name<sup>*</sup>
+                                        <label>ชื่อ-นามสกุล ผู้รับสินค้า<sup>*</sup>
                                         </label>
                                         <div class="form-group__content">
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="name_order">
                                         </div>
                                     </div>
+                                    
                                     <div class="form-group">
-                                        <label>Last Name<sup>*</sup>
+                                        <label>เบอร์โทรศัพท์<sup>*</sup>
                                         </label>
                                         <div class="form-group__content">
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="telephone_order">
                                         </div>
                                     </div>
+                                    
+                                    
+                                    
                                     <div class="form-group">
-                                        <label>Company Name<sup>*</sup>
+                                        <label>ที่อยู่ในการจัดส่ง<sup>*</sup>
                                         </label>
                                         <div class="form-group__content">
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Email Address<sup>*</sup>
-                                        </label>
-                                        <div class="form-group__content">
-                                            <input class="form-control" type="email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Country<sup>*</sup>
-                                        </label>
-                                        <div class="form-group__content">
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Phone<sup>*</sup>
-                                        </label>
-                                        <div class="form-group__content">
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Address<sup>*</sup>
-                                        </label>
-                                        <div class="form-group__content">
-                                            <input class="form-control" type="text">
+                                        <textarea class="form-control" rows="4" name="address" placeholder="บ้านเลขที่ เขต จังหวัด รหัสไปรษณีย์..."></textarea>
                                         </div>
                                     </div>
                                  
-                                    <h3 class="mt-40"> Addition information</h3>
+                                    <h3 class="mt-40"> ข้อมูลเพิ่มเติม</h3>
                                     <div class="form-group">
-                                        <label>Order Notes</label>
+                                        <label>หมายเหตุการสั่งซื้อ</label>
                                         <div class="form-group__content">
-                                            <textarea class="form-control" rows="7" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                            <textarea class="form-control" rows="7" name="note" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-5 col-lg-4 col-md-12 col-sm-12  ">
                                 <div class="ps-form__total">
-                                    <h3 class="ps-form__heading">Your Order</h3>
+                                    <h3 class="ps-form__heading">รายการแลกของคุณ</h3>
                                     <div class="content">
                                         <div class="ps-block--checkout-total">
-                                            <div class="ps-block__header">
-                                                <p>Product</p>
-                                                <p>Total</p>
-                                            </div>
+                                            
                                             <div class="ps-block__content">
+
+                                            <?php
+                                $total = 0;
+                                $shipping_price = 0;
+                                $sum = 0;
+                                ?>
+
                                                 <table class="table ps-block__products">
+
+                                                <thead>
+                                                    <tr>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Total</th>
+                                                    </tr>
+                                                </thead>
                                                     <tbody>
+                                                    @if(Session::get('cart') != null)
+                                                    <?php
+                                
+                                                        $cart = session()->get('cart');
+                                                        ?>
+                                                        @foreach ($cart as $product_item)
+                                                        <?php
+                                                            $total += ( $product_item['point']);
+                                                        ?>
                                                         <tr>
-                                                            <td><a href="#"> MVMTH Classical Leather Watch In Black ×1</a>
+                                                            <td><a href="#"> {{$product_item['name_product']}}</a>
                                                             </td>
-                                                            <td>57.99</td>
+                                                            <td>{{ number_format((float)$product_item['point'], 0, '.', '') }}</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td><a href="#"> Apple Macbook Retina Display 12” × 1</a>
-                                                            </td>
-                                                            <td>625.50</td>
-                                                        </tr>
+                                                        @endforeach
+                                                        @endif
+                                                        
                                                     </tbody>
                                                 </table>
                                                
                                              
-                                                <h3>Total <span>683.49</span></h3>
+                                                <h3>Total Point<span> {{ number_format((float)$total, 0, '.', '') }}</span></h3>
                                             </div>
-                                        </div><a class="ps-btn ps-btn--fullwidth" href="{{ url('payment_success') }}">แลกของรางวัล</a>
+                                            <input class="form-control" type="hidden" name="total" value="{{ $total }}">
+                                        </div><button type="submit" class="ps-btn ps-btn--fullwidth" href="{{ url('payment_success') }}">แลกของรางวัล</button>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </form>
                 </div>
