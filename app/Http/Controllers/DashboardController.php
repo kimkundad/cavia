@@ -49,6 +49,8 @@ class DashboardController extends Controller
             $total_point = 0;
             $objs = point::where('user_key', $j->phone)->get();
 
+            dd($objs);
+
             foreach($objs as $u){
                 if($u->type == 0){
                     $total_point += $u->point;
